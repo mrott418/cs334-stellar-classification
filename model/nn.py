@@ -15,10 +15,12 @@ class NN(object):
     def __init__(self):
         # Tuned hyperparams: {'hidden_layer_sizes': (20, 10), 'activation': 'tanh'}
         self.model = MLPClassifier(hidden_layer_sizes=[20, 10],
-                                   activation="tanh")
+                                   random_state=334,
+                                   activation="tanh",
+                                   max_iter=500)
 
     def tune(self, xTrain, yTrain):
-        params = tune_hyperparams(xTrain, yTrain, MLPClassifier(), grid_params)
+        params = tune_hyperparams(xTrain, yTrain, MLPClassifier(random_state=334, max_iter=500), grid_params)
         print(params)
         return params
 
@@ -33,6 +35,9 @@ class NN(object):
     def metrics(self, xTest, yTest):
         return get_metrics(xTest, yTest, self.model)
 
+    def get_model(self):
+        return self.model
+
 
 def main():
     # load dataset
@@ -44,7 +49,7 @@ def main():
 
     metrics = model.metrics(xTest, yTest)
     print(metrics)
-    # Accuracy 0.97245
+    # Accuracy 0.9706
 
 
 if __name__ == "__main__":

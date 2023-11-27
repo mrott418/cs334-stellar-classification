@@ -36,6 +36,9 @@ class KNN(object):
     def metrics(self, xTest, yTest):
         return get_metrics(xTest, yTest, self.model)
 
+    def get_model(self):
+        return self.model
+
 
 def main():
     # load dataset
