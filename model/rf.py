@@ -1,8 +1,9 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-from util import tune_hyperparams, get_metrics
+from util import tune_hyperparams, get_metrics, generate_roc
 
 # Hyperparameters to tune for DT
 grid_params = {
@@ -49,10 +50,17 @@ def main():
         "../data/xTest.csv"), np.ravel(pd.read_csv("../data/yTest.csv"))
 
     model = RF()
-    model.train(xTrain, yTrain)
+    #model.train(xTrain, yTrain)
 
-    metrics = model.metrics(xTest, yTest)
-    print(metrics)
+    # generates ROC graphs
+    generate_roc(model, xTrain, yTrain, xTest, yTest)
+    plt.xlim([0, 0.2])
+    plt.ylim([0.8, 1.0])
+    plt.title("Random Forest ROC")
+    plt.show()
+
+    #metrics = model.metrics(xTest, yTest)
+    #print(metrics)
     # Accuracy 0.9773
 
 
