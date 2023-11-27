@@ -15,19 +15,12 @@ class NN(object):
     def __init__(self):
         # Tuned hyperparams: {'hidden_layer_sizes': (20, 10), 'activation': 'tanh'}
         self.model = MLPClassifier(hidden_layer_sizes=[20, 10],
-<<<<<<< HEAD
                                    random_state=334,
                                    activation="tanh",
                                    max_iter=500)
 
     def tune(self, xTrain, yTrain):
         params = tune_hyperparams(xTrain, yTrain, MLPClassifier(random_state=334, max_iter=500), grid_params)
-=======
-                                   activation="tanh")
-
-    def tune(self, xTrain, yTrain):
-        params = tune_hyperparams(xTrain, yTrain, MLPClassifier(), grid_params)
->>>>>>> 6b0d8ad64ced4598163b38f293a6cdebca57654d
         print(params)
         return params
 
@@ -49,19 +42,11 @@ def main():
         "../data/xTest.csv"), np.ravel(pd.read_csv("../data/yTest.csv"))
 
     model = NN()
-<<<<<<< HEAD
     model.train(xTrain, yTrain, True)
 
     metrics = model.metrics(xTest, yTest)
     print(metrics)
     # Accuracy 0.9706
-=======
-    model.train(xTrain, yTrain)
-
-    metrics = model.metrics(xTest, yTest)
-    print(metrics)
-    # Accuracy 0.97245
->>>>>>> 6b0d8ad64ced4598163b38f293a6cdebca57654d
 
 
 if __name__ == "__main__":
