@@ -36,6 +36,9 @@ class XGB(object):
     def predict(self, xTest):
         return self.model.predict(xTest)
 
+    def get_model(self):
+        return self.model
+
 
 def main():
     # load dataset

@@ -35,6 +35,9 @@ class NN(object):
     def metrics(self, xTest, yTest):
         return get_metrics(xTest, yTest, self.model)
 
+    def get_model(self):
+        return self.model
+
 
 def main():
     # load dataset
@@ -42,7 +45,7 @@ def main():
         "../data/xTest.csv"), np.ravel(pd.read_csv("../data/yTest.csv"))
 
     model = NN()
-    model.train(xTrain, yTrain, True)
+    model.train(xTrain, yTrain)
 
     metrics = model.metrics(xTest, yTest)
     print(metrics)

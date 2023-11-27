@@ -1,56 +1,58 @@
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import VotingClassifier
+from sklearn.preprocessing import LabelEncoder
 
-from util import tune_hyperparams, get_metrics
-
-# Hyperparameters to tune for DT
-grid_params = {
-    "max_depth": range(1, 11),
-    "min_samples_leaf": range(1, 21, 2),
-    "n_estimators": [i * 10 for i in range(5, 16)],
-    "criterion": ["gini", "entropy"],
-}
+from dt import DT
+from knn import KNN
+from nn import NN
+from rf import RF
+from util import get_metrics_from_prediction
+from xgb import XGB
 
 
-class RF(object):
+class Ensemble(object):
     def __init__(self):
-        # Tuned hyperparams: {'criterion': 'gini', 'max_depth': 10, 'min_samples_leaf': 11, 'n_estimators': 60}
-        self.model = RandomForestClassifier(random_state=334,
-                                            max_depth=10,
-                                            min_samples_leaf=11,
-                                            criterion="gini",
-                                            n_estimators=60,
-                                            n_jobs=-1)
+        self.ensemble = None
+        self.estimators = None
+        self.knn, self.nn, self.dt, self.rf, self.xgb = KNN(), NN(), DT(), RF(), XGB()
 
-    def tune(self, xTrain, yTrain):
-        params = tune_hyperparams(xTrain, yTrain, RandomForestClassifier(random_state=334), grid_params)
-        print(params)
-        return params
-
-    def train(self, xTrain, yTrain, tune=False):
-        if tune:
-            self.tune(xTrain, yTrain)
-        print(self.model.fit(xTrain, yTrain))
+    def train(self, xTrain, yTrain):
+        self.knn.train(xTrain, yTrain)
+        self.nn.train(xTrain, yTrain)
+        self.dt.train(xTrain, yTrain)
+        self.rf.train(xTrain, yTrain)
+        self.xgb.train(xTrain, yTrain)
+        self.estimators = [
+            ('knn', self.knn.get_model()),
+            ('nn', self.nn.get_model()),
+            ('dt', self.dt.get_model()),
+            ('rf', self.rf.get_model()),
+            ('xgb', self.xgb.get_model()),
+        ]
+        self.ensemble = VotingClassifier(self.estimators)
+        self.ensemble.fit(xTrain, yTrain)
 
     def predict(self, xTest):
-        return self.model.predict(xTest)
-
-    def metrics(self, xTest, yTest):
-        return get_metrics(xTest, yTest, self.model)
+        return self.ensemble.predict(xTest)
 
 
 def main():
     # load dataset
-    xTrain, yTrain, xTest, yTest = pd.read_csv("../data/xTrain.csv"), np.ravel(pd.read_csv("../data/yTrain.csv")), pd.read_csv(
+    xTrain, yTrain, xTest, yTest = pd.read_csv("../data/xTrain.csv"), np.ravel(
+        pd.read_csv("../data/yTrain.csv")), pd.read_csv(
         "../data/xTest.csv"), np.ravel(pd.read_csv("../data/yTest.csv"))
 
-    model = RF()
-    model.train(xTrain, yTrain)
+    le = LabelEncoder()
+    yTrainEncoded = le.fit_transform(yTrain)
 
-    metrics = model.metrics(xTest, yTest)
+    ensemble = Ensemble()
+    ensemble.train(xTrain, yTrainEncoded)
+
+    pred = le.inverse_transform(ensemble.predict(xTest))
+    metrics = get_metrics_from_prediction(yTest, pred, "Ensemble")
     print(metrics)
-    # Accuracy 0.9773
+    # Accuracy 0.97825
 
 
 if __name__ == "__main__":
