@@ -15,7 +15,9 @@ def get_metrics(x, y, model):
     yHat = model.predict(x)
     fig, ax = plt.subplots()
     ax.set(title=model.__class__.__name__ + " Confusion Matrix")
-    ConfusionMatrixDisplay.from_predictions(y, yHat, ax=ax)
+    ConfusionMatrixDisplay.from_predictions(y, yHat, ax=ax,
+                                            im_kw={'vmin': 0, 'vmax': 400},
+                                            text_kw={'c': 'w', 'bbox': dict(facecolor='black', alpha=0.3)})
     plt.show()
     return {
         'accuracy': accuracy_score(y, yHat),
@@ -27,7 +29,9 @@ def get_metrics_from_prediction(y, yHat, model):
     # Return accuracy and confusion matrix along with plot of the matrix
     fig, ax = plt.subplots()
     ax.set(title=model + " Confusion Matrix")
-    ConfusionMatrixDisplay.from_predictions(y, yHat, ax=ax)
+    ConfusionMatrixDisplay.from_predictions(y, yHat, ax=ax,
+                                            im_kw={'vmin': 0, 'vmax': 400},
+                                            text_kw={'c': 'w', 'bbox': dict(facecolor='black', alpha=0.3)})
     plt.show()
     return {
         'accuracy': accuracy_score(y, yHat),
