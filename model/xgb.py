@@ -43,24 +43,28 @@ class XGB(object):
 
 def main():
     # load dataset
-    xTrain, yTrain, xTest, yTest = pd.read_csv("../data/xTrain.csv"), np.ravel(pd.read_csv("../data/yTrain.csv")), pd.read_csv(
-        "../data/xTest.csv"), np.ravel(pd.read_csv("../data/yTest.csv"))
+    xTrain, yTrain, xTest, yTest = pd.read_csv("../data/xTrain.csv"), \
+        np.ravel(pd.read_csv("../data/yTrain.csv")), \
+        pd.read_csv("../data/xTest.csv"), \
+        np.ravel(pd.read_csv("../data/yTest.csv"))
 
     le = LabelEncoder()
     yTrainEncoded = le.fit_transform(yTrain)
     model = XGB()
-    #model.train(xTrain, yTrainEncoded)
+    model.train(xTrain, yTrainEncoded)
 
-    generate_roc(model, xTrain, yTrain, xTest, yTest)
-    plt.xlim([0, 0.2])
-    plt.ylim([0.8, 1.0])
-    plt.title("XGBoost ROC")
-    plt.show()
-
-    #pred = le.inverse_transform(model.predict(xTest))
-    #metrics = get_metrics_from_prediction(yTest, pred, "XGBClassifier")
-    #print(metrics)
+    pred = le.inverse_transform(model.predict(xTest))
+    metrics = get_metrics_from_prediction(yTest, pred, "XGBClassifier")
+    print(metrics)
     # Accuracy 0.97815
+    # Micro F-1: 0.97815
+    # Macro F-1: 0.97457
+
+    # generate_roc(model, xTrain, yTrain, xTest, yTest)
+    # plt.xlim([0, 0.2])
+    # plt.ylim([0.8, 1.0])
+    # plt.title("XGBoost ROC")
+    # plt.show()
 
 
 if __name__ == "__main__":

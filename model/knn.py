@@ -43,22 +43,26 @@ class KNN(object):
 
 def main():
     # load dataset
-    xTrain, yTrain, xTest, yTest = pd.read_csv("../data/xTrain.csv"), np.ravel(pd.read_csv("../data/yTrain.csv")), pd.read_csv(
-        "../data/xTest.csv"), np.ravel(pd.read_csv("../data/yTest.csv"))
+    xTrain, yTrain, xTest, yTest = pd.read_csv("../data/xTrain.csv"), \
+        np.ravel(pd.read_csv("../data/yTrain.csv")), \
+        pd.read_csv("../data/xTest.csv"), \
+        np.ravel(pd.read_csv("../data/yTest.csv"))
 
     model = KNN()
-    #model.train(xTrain, yTrain)
+    model.train(xTrain, yTrain)
+
+    metrics = model.metrics(xTest, yTest)
+    print(metrics)
+    # Accuracy 0.9541
+    # Micro F-1: 0.9541
+    # Macro F-1: 0.9489
 
     # generates ROC graphs
-    generate_roc(model, xTrain, yTrain, xTest, yTest)
-    plt.xlim([0, 0.2])
-    plt.ylim([0.8, 1.0])
-    plt.title("KNN ROC")
-    plt.show()
-
-    #metrics = model.metrics(xTest, yTest)
-    #print(metrics)
-    # Accuracy 0.9541
+    # generate_roc(model, xTrain, yTrain, xTest, yTest)
+    # plt.xlim([0, 0.2])
+    # plt.ylim([0.8, 1.0])
+    # plt.title("KNN ROC")
+    # plt.show()
 
 
 if __name__ == "__main__":

@@ -42,22 +42,26 @@ class NN(object):
 
 def main():
     # load dataset
-    xTrain, yTrain, xTest, yTest = pd.read_csv("../data/xTrain.csv"), np.ravel(pd.read_csv("../data/yTrain.csv")), pd.read_csv(
-        "../data/xTest.csv"), np.ravel(pd.read_csv("../data/yTest.csv"))
+    xTrain, yTrain, xTest, yTest = pd.read_csv("../data/xTrain.csv"), \
+        np.ravel(pd.read_csv("../data/yTrain.csv")), \
+        pd.read_csv("../data/xTest.csv"), \
+        np.ravel(pd.read_csv("../data/yTest.csv"))
 
     model = NN()
-    #model.train(xTrain, yTrain)
+    model.train(xTrain, yTrain)
+
+    metrics = model.metrics(xTest, yTest)
+    print(metrics)
+    # Accuracy 0.9706
+    # Micro F-1: 0.9706
+    # Macro F-1: 0.9661
 
     # generates ROC graphs
-    generate_roc(model, xTrain, yTrain, xTest, yTest)
-    plt.xlim([0, 0.2])
-    plt.ylim([0.8, 1.0])
-    plt.title("Neural Network ROC")
-    plt.show()
-
-    #metrics = model.metrics(xTest, yTest)
-    #print(metrics)
-    # Accuracy 0.9706
+    # generate_roc(model, xTrain, yTrain, xTest, yTest)
+    # plt.xlim([0, 0.2])
+    # plt.ylim([0.8, 1.0])
+    # plt.title("Neural Network ROC")
+    # plt.show()
 
 
 if __name__ == "__main__":
