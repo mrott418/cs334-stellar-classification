@@ -53,6 +53,7 @@ def main():
         np.ravel(pd.read_csv("../data/yTest.csv"))
 
     model = DT()
+    model.train(xTrain, yTrain)
 
     metrics = model.metrics(xTest, yTest)
     print(metrics)
