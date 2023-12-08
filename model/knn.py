@@ -29,7 +29,7 @@ class KNN(object):
     def train(self, xTrain, yTrain, tune=False):
         if tune:
             self.tune(xTrain, yTrain)
-        self.model.fit(xTrain, yTrain)
+        print(self.model.fit(xTrain, yTrain))
 
     def predict(self, xTest):
         return self.model.predict(xTest)

@@ -8,7 +8,7 @@ from dt import DT
 from knn import KNN
 from nn import NN
 from rf import RF
-from util import get_metrics_from_prediction, generate_roc
+from util import get_metrics_from_prediction, generate_roc, generate_multi_model_roc
 from xgb import XGB
 
 
@@ -34,6 +34,9 @@ class Ensemble(object):
 
     def get_model(self):
         return self.ensemble
+
+    def get_models(self):
+        return [self.knn, self.nn, self.dt, self.rf, self.xgb, self]
 
 
 def main():
@@ -63,6 +66,9 @@ def main():
     # plt.ylim([0.8, 1.0])
     # plt.title("Ensemble ROC")
     # plt.show()
+
+    # generates ROC graphs for each type
+    generate_multi_model_roc(ensemble.get_models(), xTrain, yTrain, xTest, yTest)
 
 
 if __name__ == "__main__":
