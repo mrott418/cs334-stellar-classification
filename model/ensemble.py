@@ -26,7 +26,7 @@ class Ensemble(object):
             ('rf', self.rf.get_model()),
             ('xgb', self.xgb.get_model()),
         ]
-        self.ensemble = VotingClassifier(self.estimators, voting='soft', weights=[1, 2, 3, 5, 5])
+        self.ensemble = VotingClassifier(self.estimators, voting='soft', weights=[2, 3, 3, 5, 5])
         self.ensemble.fit(xTrain, yTrain)
 
     def predict(self, xTest):
@@ -56,16 +56,16 @@ def main():
 
     metrics = get_metrics_from_prediction(yTest, pred, "Ensemble")
     print(metrics)
-    # Accuracy 0.9784
-    # Micro F-1: 0.9784
-    # Macro F-1: 0.9747
+    # Accuracy 0.97885
+    # Micro F-1: 0.97885
+    # Macro F-1: 0.9753
 
     # generates ROC graphs
-    # generate_roc(ensemble, xTrain, yTrain, xTest, yTest)
-    # plt.xlim([0, 0.2])
-    # plt.ylim([0.8, 1.0])
-    # plt.title("Ensemble ROC")
-    # plt.show()
+    generate_roc(ensemble, xTrain, yTrain, xTest, yTest)
+    plt.xlim([0, 0.2])
+    plt.ylim([0.8, 1.0])
+    plt.title("Ensemble ROC")
+    plt.show()
 
     # generates ROC graphs for each type
     generate_multi_model_roc(ensemble.get_models(), xTrain, yTrain, xTest, yTest)

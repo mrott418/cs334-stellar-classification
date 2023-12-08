@@ -6,22 +6,32 @@ from sklearn.ensemble import RandomForestClassifier
 from util import tune_hyperparams, get_metrics, generate_roc
 
 # Hyperparameters to tune for DT
+# Tune one parameter at a time
 grid_params = {
     "max_depth": range(1, 11),
-    "min_samples_leaf": range(1, 21, 2),
-    "n_estimators": [i * 10 for i in range(5, 16)],
+    "min_samples_leaf": range(1, 11),
+    "min_samples_split": range(2, 11),
     "criterion": ["gini", "entropy"],
+    "n_estimators": [i * 5 for i in range(5, 16)],
 }
 
 
 class RF(object):
     def __init__(self):
-        # Tuned hyperparams: {'criterion': 'gini', 'max_depth': 10, 'min_samples_leaf': 11, 'n_estimators': 60}
+        """
+        Tuned hyperparams:
+            'max_depth': 10,
+            'min_samples_leaf': 1,
+            'min_samples_split': 2,
+            'criterion': 'entropy',
+            'n_estimators': 65
+        """
         self.model = RandomForestClassifier(random_state=334,
                                             max_depth=10,
-                                            min_samples_leaf=11,
-                                            criterion="gini",
-                                            n_estimators=60,
+                                            min_samples_leaf=1,
+                                            min_samples_split=2,
+                                            criterion="entropy",
+                                            n_estimators=65,
                                             n_jobs=-1)
 
     def tune(self, xTrain, yTrain):
@@ -56,16 +66,16 @@ def main():
 
     metrics = model.metrics(xTest, yTest)
     print(metrics)
-    # Accuracy 0.9773
-    # Micro F-1: 0.9773
-    # Macro F-1: 0.9734
+    # Accuracy 0.97765
+    # Micro F-1: 0.97765
+    # Macro F-1: 0.9738
 
     # generates ROC graphs
-    # generate_roc(model, xTrain, yTrain, xTest, yTest)
-    # plt.xlim([0, 0.2])
-    # plt.ylim([0.8, 1.0])
-    # plt.title("Random Forest ROC")
-    # plt.show()
+    generate_roc(model, xTrain, yTrain, xTest, yTest)
+    plt.xlim([0, 0.2])
+    plt.ylim([0.8, 1.0])
+    plt.title("Random Forest ROC")
+    plt.show()
 
 
 if __name__ == "__main__":

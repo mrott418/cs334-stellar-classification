@@ -7,15 +7,15 @@ from util import tune_hyperparams, get_metrics, generate_roc
 
 # Hyperparameters to tune for NN
 grid_params = {
-    "hidden_layer_sizes": [(5, 4), (20, 10), (10, 20, 10), (10, 30, 20), (10, 30, 40, 20)],
-    "activation": ["identity", "logistic", "relu", "tanh"]
+    "hidden_layer_sizes": [(100), (20, 10), (15, 10, 5), (10, 5)],
+    "activation": ["logistic", "relu", "tanh"]
 }
 
 
 class NN(object):
     def __init__(self):
-        # Tuned hyperparams: {'hidden_layer_sizes': (20, 10), 'activation': 'tanh'}
-        self.model = MLPClassifier(hidden_layer_sizes=[20, 10],
+        # Tuned hyperparams: {'hidden_layer_sizes': (10, 5), 'activation': 'tanh'}
+        self.model = MLPClassifier(hidden_layer_sizes=[10, 5],
                                    random_state=334,
                                    activation="tanh",
                                    max_iter=500)
@@ -52,16 +52,16 @@ def main():
 
     metrics = model.metrics(xTest, yTest)
     print(metrics)
-    # Accuracy 0.9706
-    # Micro F-1: 0.9706
-    # Macro F-1: 0.9661
+    # Accuracy 0.9715
+    # Micro F-1: 0.9715
+    # Macro F-1: 0.9674
 
     # generates ROC graphs
-    # generate_roc(model, xTrain, yTrain, xTest, yTest)
-    # plt.xlim([0, 0.2])
-    # plt.ylim([0.8, 1.0])
-    # plt.title("Neural Network ROC")
-    # plt.show()
+    generate_roc(model, xTrain, yTrain, xTest, yTest)
+    plt.xlim([0, 0.2])
+    plt.ylim([0.8, 1.0])
+    plt.title("Neural Network ROC")
+    plt.show()
 
 
 if __name__ == "__main__":

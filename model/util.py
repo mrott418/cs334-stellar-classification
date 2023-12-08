@@ -7,7 +7,7 @@ from sklearn.ensemble import VotingClassifier
 
 def tune_hyperparams(x, y, model, params):
     # Exhaustive grid search and cross validation
-    cv = GridSearchCV(model, params, cv=5, n_jobs=-1, scoring='f1_micro')
+    cv = GridSearchCV(model, params, cv=5, n_jobs=-1, scoring='f1_macro')
     res = cv.fit(x, y)
     return res.best_params_
 

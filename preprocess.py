@@ -10,6 +10,14 @@ def split_data(df):
     return train_test_split(X, y, random_state=334, test_size=0.2)
 
 
+def filter_data(x, y):
+    # filter out training data lacking observations
+    for col in x:
+        idx = x[x[col] == -9999].index
+        x, y = x.drop(idx), y.drop(idx)
+    return x, y
+
+
 def mean_normalize(df):
     # mean normalization
     return (df - df.mean()) / df.std()
@@ -26,6 +34,7 @@ def main():
 
     # split dataset
     xTrain, xTest, yTrain, yTest = split_data(dataset)
+    xTrain, yTrain = filter_data(xTrain, yTrain)
 
     fig, ax = plt.subplots()
     ax.set(title="Pearson Correlation of Training Data")

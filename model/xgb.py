@@ -10,19 +10,18 @@ from util import tune_hyperparams, get_metrics_from_prediction, generate_roc
 # Tune only one parameter at a time
 grid_params = {
     "max_depth": range(1, 11),
-    "min_child_weight": range(1, 6),
-    "gamma": [i / 20.0 for i in range(0, 11)],
+    "min_child_weight": range(1, 21),
+    "gamma": [i / 20.0 for i in range(0, 21)],
 }
 
 
 class XGB(object):
     def __init__(self):
-        # Tuned hyperparams: {'max_depth': 10, 'min_child_weight': 5, 'gamma': 0.5}
+        # Tuned hyperparams: {'max_depth': 7, 'min_child_weight': 5, 'gamma': 0.0}
         self.model = XGBClassifier(random_state=334,
-                                   max_depth=10,
-                                   min_child_weight=5,
-                                   gamma=0.5,
-                                   learning_rate=0.1)
+                                   max_depth=7,
+                                   min_child_weight=19,
+                                   gamma=0.0)
 
     def tune(self, xTrain, yTrain):
         params = tune_hyperparams(xTrain, yTrain, XGBClassifier(random_state=334), grid_params)
@@ -56,9 +55,9 @@ def main():
     pred = le.inverse_transform(model.predict(xTest))
     metrics = get_metrics_from_prediction(yTest, pred, "XGBClassifier")
     print(metrics)
-    # Accuracy 0.97815
-    # Micro F-1: 0.97815
-    # Macro F-1: 0.97457
+    # Accuracy 0.9784
+    # Micro F-1: 0.9784
+    # Macro F-1: 0.9748
 
     # generate_roc(model, xTrain, yTrain, xTest, yTest)
     # plt.xlim([0, 0.2])

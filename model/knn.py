@@ -58,11 +58,11 @@ def main():
     # Macro F-1: 0.9489
 
     # generates ROC graphs
-    # generate_roc(model, xTrain, yTrain, xTest, yTest)
-    # plt.xlim([0, 0.2])
-    # plt.ylim([0.8, 1.0])
-    # plt.title("KNN ROC")
-    # plt.show()
+    generate_roc(model, xTrain, yTrain, xTest, yTest)
+    plt.xlim([0, 0.2])
+    plt.ylim([0.8, 1.0])
+    plt.title("KNN ROC")
+    plt.show()
 
 
 if __name__ == "__main__":

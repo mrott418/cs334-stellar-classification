@@ -8,17 +8,17 @@ from util import tune_hyperparams, get_metrics, generate_roc
 # Hyperparameters to tune for DT
 grid_params = {
     "criterion": ["gini", "entropy"],
-    "max_depth": range(5, 11),
-    "min_samples_leaf": range(1, 31, 2),
+    "max_depth": range(5, 16),
+    "min_samples_leaf": range(11, 26, 2),
 }
 
 
 class DT(object):
     def __init__(self):
-        # Tuned hyperparams: {'criterion': 'entropy', 'max_depth': 10, 'min_samples_leaf': 19}
+        # Tuned hyperparams: {'criterion': 'entropy', 'max_depth': 14, 'min_samples_leaf': 19}
         self.model = DecisionTreeClassifier(random_state=334,
                                             criterion="entropy",
-                                            max_depth=10,
+                                            max_depth=14,
                                             min_samples_leaf=19)
 
     def tune(self, xTrain, yTrain):
@@ -57,16 +57,16 @@ def main():
 
     metrics = model.metrics(xTest, yTest)
     print(metrics)
-    # Accuracy 0.9755
-    # Micro F-1: 0.9755
-    # Macro F-1: 0.9714
+    # Accuracy 0.97565
+    # Micro F-1: 0.97565
+    # Macro F-1: 0.9716
 
     # generates ROC graphs
-    # generate_roc(model, xTrain, yTrain, xTest, yTest)
-    # plt.xlim([0, 0.2])
-    # plt.ylim([0.8, 1.0])
-    # plt.title("Decision Tree ROC")
-    # plt.show()
+    generate_roc(model, xTrain, yTrain, xTest, yTest)
+    plt.xlim([0, 0.2])
+    plt.ylim([0.8, 1.0])
+    plt.title("Decision Tree ROC")
+    plt.show()
 
 if __name__ == "__main__":
     main()
