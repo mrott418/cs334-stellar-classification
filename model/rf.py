@@ -44,6 +44,17 @@ class RF(object):
             self.tune(xTrain, yTrain)
         print(self.model.fit(xTrain, yTrain))
 
+        # generate graph for feature imporances
+        fig, ax = plt.subplots()
+        bars = ["u", "g", "r", "i", "z", "redshift"]
+        colors = ["red", "orange", "gold", "green", "blue", "purple"]
+        rects = ax.bar(bars, self.model.feature_importances_, color=colors)
+        rounded = [0, 0, 0, 0, 0, 0]
+        for i in range(6):
+            rounded[i] = round(self.model.feature_importances_[i], 4)
+        ax.bar_label(rects, rounded)
+        ax.set_title("Relative importance of different features")
+
     def predict(self, xTest):
         return self.model.predict(xTest)
 
